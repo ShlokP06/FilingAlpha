@@ -1,0 +1,54 @@
+[project]
+name = "filing-alpha"
+version = "0.1.0"
+description = "Backtested classical-NLP text signals from SEC filings"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "sqlalchemy>=2.0",
+    "psycopg[binary]>=3.2",
+    "alembic>=1.13",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.5",
+    "edgartools>=3.5",
+    "yfinance>=0.2.40",
+    "scikit-learn>=1.5",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.13",
+    "textstat>=0.7",
+    "prometheus-client>=0.21",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "black>=24.0",
+    "ruff>=0.6",
+    "httpx>=0.27",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+extend-exclude = "notebooks|data|frontend"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["notebooks", "data", "frontend", "migrations"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "integration: requires the docker compose stack (postgres) running on localhost",
+]
+
+[tool.setuptools]
+packages = ["core", "api", "pipeline"]

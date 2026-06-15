@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+data/raw/
+*.csv
+.DS_Store
+.vscode/
+.idea/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+# keep PLAN.md out of the repo (lives in ~/.claude/plans)
+PLAN.md
+# frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env.local
