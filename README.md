@@ -37,9 +37,11 @@ costs, information coefficients, and long-short Sharpe ratios.
 - **Walk-forward, expanding window** — the ML model only ever trains on data that
   precedes the test fold. A unit test asserts `max(train date) < min(test date)` for
   every fold.
-- **Honest metrics** — Spearman information coefficient (with t-stat), long-short
-  tercile Sharpe (net of transaction costs), hit rate. Weak signals are reported as
-  weak.
+- **Honest metrics** — Spearman information coefficient (with t-stat) and an
+  event-study tercile spread: top-minus-bottom forward return (net of transaction
+  costs) with a Welch t-stat. Annual filings are too sparse for a per-rebalance-date
+  long-short portfolio, so each filing is treated as an independent event. Weak,
+  insignificant signals are reported as weak.
 
 ## Architecture
 
@@ -81,9 +83,39 @@ network; enable them with `RUN_INTEGRATION=1 uv run pytest -m integration`.
 
 ## Backtest results
 
-Run `scripts/run_pipeline.py` to populate the universe and print the IC / Sharpe
-table; paste the table here once you've run it on your chosen universe. Report it
-straight — a correctly-measured null result is a feature of this project, not a bug.
+Universe: **12 large-cap US companies** (AAPL, BA, CAT, DIS, JNJ, JPM, KO, MSFT, NVDA, PG, WMT, XOM) —
+**72 10-K filings**, 6-year daily price history (18,135 closes), two forward horizons (21 and 63 trading
+days). Reported straight: a correctly-measured null result is a feature of this project, not a bug.
+
+**Signal evaluation** (rank-IC with t-stat; event-study top-minus-bottom tercile spread, net of 10 bps/side,
+with a Welch t-stat):
+
+| Signal | Horizon | IC | IC t | L-S spread | Spread t |
+|--------|--------:|------:|------:|-----------:|---------:|
+| fog_readability    | 21 | -0.151 | -1.28 | -0.0334 | -1.33 |
+| lm_litigious       | 21 |  0.081 |  0.68 |  0.0198 |  1.03 |
+| lm_litigious       | 63 |  0.035 |  0.29 |  0.0257 |  0.77 |
+| yoy_similarity     | 63 |  0.096 |  0.74 |  0.0183 |  0.73 |
+| risk_factor_delta  | 63 | -0.042 | -0.31 |  0.0333 |  0.66 |
+| fog_readability    | 63 |  0.006 |  0.05 | -0.0227 | -0.57 |
+| lm_uncertainty     | 63 |  0.097 |  0.82 |  0.0143 |  0.39 |
+| lm_negative        | 63 | -0.037 | -0.31 | -0.0146 | -0.36 |
+| risk_factor_delta  | 21 |  0.068 |  0.50 |  0.0055 |  0.27 |
+| yoy_similarity     | 21 | -0.012 | -0.09 | -0.0075 | -0.25 |
+| lm_negative        | 21 | -0.032 | -0.27 |  0.0005 |  0.11 |
+| lm_uncertainty     | 21 | -0.002 | -0.02 | -0.0010 |  0.04 |
+
+**Walk-forward classifier** (GradientBoostingClassifier, 5 expanding-window folds, 47 out-of-sample obs):
+
+| Horizon | OOS accuracy | OOS ROC-AUC |
+|--------:|-------------:|------------:|
+| 21d | 0.489 | 0.475 |
+| 63d | 0.574 | 0.500 |
+
+No signal is statistically significant (every \|t\| < 1.4) and out-of-sample accuracy is ~coin-flip — the
+expected, honest outcome on a small single-name universe. The deliverable is the **leakage-free measurement
+harness** (point-in-time filing lag, cross-sectional IC, event-study spread, an expanding-window walk-forward
+that asserts `max(train date) < min(test date)`), not an alpha claim.
 
 ## Tech
 
@@ -95,5 +127,5 @@ yfinance · textstat · Vite/React/TypeScript/Tremor · Docker Compose · Promet
 - **Backend/SDE** — typed FastAPI (routers by domain, DI'd sessions, Pydantic contracts),
   Postgres + Alembic migrations, idempotent ingestion, Docker, CI, Prometheus metrics.
 - **Hedge-Fund DS** — published text signals, point-in-time/no-lookahead backtest,
-  transaction costs, IC + t-stat + long-short Sharpe.
+  transaction costs, rank-IC + t-stat + event-study tercile spread.
 - **Applied ML** — walk-forward classifier on the engineered features, OOS evaluation.
