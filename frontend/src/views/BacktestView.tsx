@@ -84,9 +84,9 @@ function BestSignalPanel({ best }: { best: BacktestResult }) {
         sub={Math.abs(best.ic_tstat) >= 1.96 ? "Statistically significant" : "Below 1.96 threshold"}
       />
       <SummaryCard
-        label="L/S Sharpe"
-        value={fmt(best.ls_sharpe, 2)}
-        sub={`Hit rate ${fmtPct(best.hit_rate)}`}
+        label="L/S Spread"
+        value={fmtPct(best.ls_spread)}
+        sub={`Tercile spread, t ${fmt(best.spread_tstat, 2)}`}
       />
     </div>
   );
@@ -118,8 +118,10 @@ export function BacktestView() {
       <div>
         <h2 className="text-xl font-semibold text-slate-100 mb-1">Backtest Results</h2>
         <p className="text-sm text-slate-500">
-          Signal IC and long-short performance across horizons. Results are reported as-is —
-          classical NLP signals on small samples often yield modest ICs, which is expected.
+          Rank-IC and the event-study tercile spread (top-minus-bottom forward return, net of
+          cost) across horizons. Annual filings are sparse, so each filing is treated as an
+          independent event. Results are reported as-is — modest, often insignificant ICs are
+          expected on small samples.
         </p>
       </div>
 
@@ -144,9 +146,8 @@ export function BacktestView() {
                   <TableHeaderCell className="text-slate-400 text-right">Horizon</TableHeaderCell>
                   <TableHeaderCell className="text-slate-400 text-right">IC</TableHeaderCell>
                   <TableHeaderCell className="text-slate-400 text-right">IC t-stat</TableHeaderCell>
-                  <TableHeaderCell className="text-slate-400 text-right">L/S Sharpe</TableHeaderCell>
-                  <TableHeaderCell className="text-slate-400 text-right">Hit Rate</TableHeaderCell>
-                  <TableHeaderCell className="text-slate-400 text-right">Cum. Return</TableHeaderCell>
+                  <TableHeaderCell className="text-slate-400 text-right">L/S Spread</TableHeaderCell>
+                  <TableHeaderCell className="text-slate-400 text-right">Spread t-stat</TableHeaderCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -161,13 +162,10 @@ export function BacktestView() {
                       <TStatBadge tstat={r.ic_tstat} />
                     </TableCell>
                     <TableCell className="text-right font-mono text-slate-300">
-                      {fmt(r.ls_sharpe, 2)}
+                      {fmtPct(r.ls_spread)}
                     </TableCell>
-                    <TableCell className="text-right text-slate-300">
-                      {fmtPct(r.hit_rate)}
-                    </TableCell>
-                    <TableCell className="text-right font-mono text-slate-300">
-                      {fmtPct(r.cum_return)}
+                    <TableCell className="text-right">
+                      <TStatBadge tstat={r.spread_tstat} />
                     </TableCell>
                   </TableRow>
                 ))}

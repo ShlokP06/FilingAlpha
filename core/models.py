@@ -115,9 +115,9 @@ class BacktestRun(Base):
     config_json: Mapped[str | None] = mapped_column(Text)
     ic: Mapped[float | None] = mapped_column(Float)  # information coefficient
     ic_tstat: Mapped[float | None] = mapped_column(Float)
-    ls_sharpe: Mapped[float | None] = mapped_column(Float)  # long-short Sharpe
-    hit_rate: Mapped[float | None] = mapped_column(Float)
-    cum_return: Mapped[float | None] = mapped_column(Float)
+    # Event-study tercile spread: top-minus-bottom mean forward return (net of cost)
+    ls_spread: Mapped[float | None] = mapped_column(Float)
+    spread_tstat: Mapped[float | None] = mapped_column(Float)  # Welch t-stat of the spread
 
 
 class ModelRun(Base):

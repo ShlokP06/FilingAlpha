@@ -46,9 +46,8 @@ class BacktestOut(BaseModel):
     horizon_days: int
     ic: float | None = None
     ic_tstat: float | None = None
-    ls_sharpe: float | None = None
-    hit_rate: float | None = None
-    cum_return: float | None = None
+    ls_spread: float | None = None
+    spread_tstat: float | None = None
     created_at: datetime | None = None
 
 

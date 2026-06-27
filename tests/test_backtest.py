@@ -13,6 +13,7 @@ from __future__ import annotations
 from datetime import date, timedelta
 
 import numpy as np
+import pandas as pd
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -26,7 +27,12 @@ from core.models import (
     Price,
     Signal,
 )
-from pipeline.backtest import compute_ic, load_observations, run_backtest
+from pipeline.backtest import (
+    compute_event_study_spread,
+    compute_ic,
+    load_observations,
+    run_backtest,
+)
 from pipeline.model import run_walkforward
 from pipeline.returns import (
     compute_forward_returns,
@@ -221,6 +227,36 @@ def test_ic_cross_sectional_mode_when_breadth_exists(session: Session) -> None:
     frame = load_observations(session, "lm_negative", 21)
     _, _, method = compute_ic(frame)
     assert method == "cross_sectional"
+
+
+# --------------------------------------------------------------------------- #
+# Event-study tercile spread
+# --------------------------------------------------------------------------- #
+def test_event_study_spread_positive_when_signal_predicts_returns() -> None:
+    """A signal monotonically aligned with forward returns yields a positive spread."""
+    n = 30
+    signal = np.arange(n, dtype=float)
+    frame = pd.DataFrame({"signal": signal, "fwd_return": signal / 100.0})
+    spread, tstat, n_long, n_short = compute_event_study_spread(frame, cost_bps=0.0)
+    assert spread > 0.0
+    assert tstat > 0.0
+    assert n_long == n_short == n // 3
+
+
+def test_event_study_spread_charges_round_trip_cost() -> None:
+    """The spread is reduced by twice the per-side cost."""
+    n = 30
+    signal = np.arange(n, dtype=float)
+    frame = pd.DataFrame({"signal": signal, "fwd_return": signal / 100.0})
+    gross, _, _, _ = compute_event_study_spread(frame, cost_bps=0.0)
+    net, _, _, _ = compute_event_study_spread(frame, cost_bps=10.0)
+    assert net == pytest.approx(gross - 2.0 * 10.0 / 1e4)
+
+
+def test_event_study_spread_too_few_events_returns_zeros() -> None:
+    """Fewer than two observations per tercile yields a neutral, zeroed result."""
+    frame = pd.DataFrame({"signal": [1.0, 2.0, 3.0], "fwd_return": [0.0, 0.1, 0.2]})
+    assert compute_event_study_spread(frame, cost_bps=10.0) == (0.0, 0.0, 0, 0)
 
 
 # --------------------------------------------------------------------------- #

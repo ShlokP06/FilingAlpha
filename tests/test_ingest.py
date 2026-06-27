@@ -78,10 +78,11 @@ def _make_entity_filing(
     ef.filing_date = filing_date
     ef.report_date = report_date
     ef.form = form
-    # parse() returns a mock Document that exposes get_sec_section
-    doc = MagicMock()
-    doc.get_sec_section = lambda section, *a, **kw: f"<{section} text>"
-    ef.parse.return_value = doc
+    # obj() returns a mock report exposing the 10-K section properties
+    report = MagicMock()
+    report.risk_factors = "<Item 1A text>"
+    report.management_discussion = "<Item 7 text>"
+    ef.obj.return_value = report
     # text() returns a short dummy string
     ef.text.return_value = "Full filing text content."
     return ef
@@ -261,13 +262,13 @@ class TestIngestFilings:
     def test_section_extraction_failure_does_not_crash(
         self, session: Session, monkeypatch, tmp_path
     ):
-        """If parse() raises, the filing is still inserted with None sections."""
+        """If obj() raises, the filing is still inserted with None sections."""
         from pipeline import ingest
 
         _patch_settings(monkeypatch, tmp_path)
 
         ef = _make_entity_filing()
-        ef.parse.side_effect = RuntimeError("HTML parse error")
+        ef.obj.side_effect = RuntimeError("HTML parse error")
         ef.text.return_value = None  # also fails to fetch text
 
         edgar_mock = MagicMock()

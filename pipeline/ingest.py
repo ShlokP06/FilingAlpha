@@ -62,21 +62,30 @@ def _parse_date(value: Optional[str]) -> Optional[date]:
         return None
 
 
-def _extract_section(doc: object, section_name: str) -> Optional[str]:
-    """Attempt to extract a named section from a parsed Document.
+def _extract_section(report: object, attr: str) -> Optional[str]:
+    """Extract a named section from an edgartools report data object.
+
+    edgartools exposes 10-K sections as properties on the object returned by
+    ``filing.obj()`` (e.g. ``TenK.risk_factors`` for Item 1A,
+    ``TenK.management_discussion`` for Item 7), not via a ``get_sec_section``
+    method.  The property may return ``None`` or a rich section object; we
+    coerce to stripped text.
 
     Args:
-        doc: Parsed Document object returned by ``filing.parse()``.
-        section_name: E.g. ``"Item 1A"`` or ``"Item 7"``.
+        report: Data object returned by ``filing.obj()`` (e.g. ``TenK``).
+        attr: Property name, e.g. ``"risk_factors"`` or ``"management_discussion"``.
 
     Returns:
-        Section text, or None if the document does not contain the section
-        or if extraction raises any exception.
+        Section text, or None if the section is absent or extraction raises.
     """
     try:
-        return doc.get_sec_section(section_name)  # type: ignore[union-attr]
+        value = getattr(report, attr, None)
+        if value is None:
+            return None
+        text = str(value).strip()
+        return text or None
     except Exception:
-        logger.debug("Section %r not found in document", section_name)
+        logger.debug("Section %r not available on report object", attr)
         return None
 
 
@@ -210,18 +219,18 @@ def ingest_filings(
         text_path: Optional[str] = None
 
         try:
-            doc = ef.parse()
+            report = ef.obj()
         except Exception:
             logger.warning(
-                "parse() failed for %s accession %s",
+                "obj() parse failed for %s accession %s",
                 company.ticker,
                 ef.accession_no,
             )
-            doc = None
+            report = None
 
-        if doc is not None:
-            item1a = _extract_section(doc, "Item 1A")
-            mdna = _extract_section(doc, "Item 7")
+        if report is not None:
+            item1a = _extract_section(report, "risk_factors")
+            mdna = _extract_section(report, "management_discussion")
 
         # Cache full filing text to disk
         try:

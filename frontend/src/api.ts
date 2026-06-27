@@ -38,9 +38,8 @@ export interface BacktestResult {
   horizon_days: number;
   ic: number;
   ic_tstat: number;
-  ls_sharpe: number;
-  hit_rate: number;
-  cum_return: number;
+  ls_spread: number;
+  spread_tstat: number;
   created_at: string;
 }
 

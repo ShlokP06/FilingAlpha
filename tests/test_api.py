@@ -107,9 +107,8 @@ def seeded_db(create_schema):  # noqa: ANN001
         horizon_days=30,
         ic=0.05,
         ic_tstat=2.1,
-        ls_sharpe=0.8,
-        hit_rate=0.55,
-        cum_return=0.12,
+        ls_spread=0.012,
+        spread_tstat=1.4,
         created_at=datetime(2024, 1, 15, 12, 0, 0),
     )
     bt2 = BacktestRun(
@@ -117,9 +116,8 @@ def seeded_db(create_schema):  # noqa: ANN001
         horizon_days=60,
         ic=0.08,
         ic_tstat=3.2,
-        ls_sharpe=1.1,
-        hit_rate=0.58,
-        cum_return=0.20,
+        ls_spread=0.025,
+        spread_tstat=2.3,
         created_at=datetime(2024, 2, 1, 9, 0, 0),
     )
     session.add_all([bt1, bt2])

@@ -1,17 +1,21 @@
-"""Signal backtesting: information coefficient and long-short portfolio.
+"""Signal backtesting: information coefficient and an event-study spread.
 
 Evaluates one signal column at one horizon against filing-lagged forward
-returns (computed in :mod:`pipeline.returns`). Two standard measures are
-produced and persisted as a :class:`BacktestRun`:
+returns (computed in :mod:`pipeline.returns`). Two measures are produced and
+persisted as a :class:`BacktestRun`:
 
 * **Information Coefficient (IC):** Spearman rank correlation between the signal
   and the forward return, with a t-statistic
   ``t = ic * sqrt((n - 2) / (1 - ic ** 2))``.
 
-* **Long-short portfolio:** each period, rank observations by the signal, go
-  long the top tercile and short the bottom tercile, charge ``cost_bps`` per
-  side, and build the per-period return series, from which we report annualised
-  Sharpe, hit rate, and cumulative return.
+* **Event-study tercile spread:** annual 10-K filings are sparse and scattered
+  across the calendar, so almost no single filing date has enough firms to form
+  a cross-sectional long-short portfolio — a per-date Sharpe is undefined. The
+  appropriate unit of analysis is the *filing event*. We therefore sort **all**
+  filing events by the signal, take the top and bottom terciles, and report the
+  difference in their mean forward return (net of round-trip cost) together with
+  a Welch two-sample t-statistic. This is the standard event-study construction
+  and is honest about what the data can support.
 
 **IC methodology — cross-sectional, averaged across filing dates, with a pooled
 fallback.** The academically correct construction is a *cross-sectional* IC:
@@ -34,7 +38,7 @@ from dataclasses import asdict, dataclass
 
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, ttest_ind
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -53,15 +57,12 @@ SIGNAL_COLUMNS: frozenset[str] = frozenset(
     }
 )
 
-# Trading days per year, used to annualise the long-short Sharpe ratio. Each
-# long-short observation corresponds to one filing event held over the horizon,
-# so we annualise by horizon length rather than by 252 directly.
-_TRADING_DAYS_PER_YEAR = 252
-
 # Minimum observations a period needs to contribute a cross-sectional IC.
 _MIN_PERIOD_OBS = 5
 # Minimum qualifying periods before we trust cross-sectional averaging.
 _MIN_PERIODS = 5
+# Minimum events required to form top/bottom terciles of at least 2 each.
+_MIN_SPREAD_OBS = 6
 
 
 @dataclass(frozen=True)
@@ -73,9 +74,8 @@ class BacktestResult:
     n_obs: int
     ic: float
     ic_tstat: float
-    ls_sharpe: float
-    hit_rate: float
-    cum_return: float
+    ls_spread: float  # top-minus-bottom tercile mean forward return (net of cost)
+    spread_tstat: float  # Welch two-sample t-stat of the tercile spread
     ic_method: str
 
 
@@ -167,84 +167,50 @@ def compute_ic(frame: pd.DataFrame) -> tuple[float, float, str]:
     return rho, _ic_tstat(rho, len(frame)), "pooled"
 
 
-def _tercile_long_short(group: pd.DataFrame, cost: float) -> float | None:
-    """Net long-short return for one period's cross-section.
+def compute_event_study_spread(
+    frame: pd.DataFrame, cost_bps: float
+) -> tuple[float, float, int, int]:
+    """Event-study tercile spread across all filing events.
 
-    Long the top signal tercile, short the bottom, equal-weighted, charging
-    ``cost`` (fraction) per side.
-
-    Args:
-        group: Observations for one period with ``signal`` and ``fwd_return``.
-        cost: Per-side transaction cost as a fraction (e.g. 0.001 for 10 bps).
-
-    Returns:
-        Net long-short return, or ``None`` if the cross-section is too thin to
-        form distinct terciles.
-    """
-    n = len(group)
-    if n < 3:
-        return None
-    ranked = group.sort_values("signal")
-    k = n // 3
-    if k < 1:
-        return None
-    short_leg = ranked.head(k)["fwd_return"].mean()
-    long_leg = ranked.tail(k)["fwd_return"].mean()
-    gross = float(long_leg - short_leg)
-    # Two sides traded (long and short), cost charged on each.
-    return gross - 2.0 * cost
-
-
-def compute_long_short(
-    frame: pd.DataFrame, horizon: int, cost_bps: float
-) -> tuple[float, float, float, pd.Series]:
-    """Build the long-short return series and its summary statistics.
-
-    When multiple periods have enough breadth, the portfolio is rebalanced per
-    period (per filing date). When the data are too sparse for cross-sectional
-    terciles, a single pooled tercile sort across all observations is used so a
-    statistic can still be reported.
+    Treats each filing as an independent event (the correct unit for sparse
+    annual filings, where a per-rebalance-date portfolio is undefined). Sorts
+    every event by the signal, takes the top and bottom terciles, and reports
+    the difference in mean forward return — long the top tercile, short the
+    bottom — net of a round-trip transaction cost, together with a Welch
+    two-sample t-statistic between the two terciles' returns.
 
     Args:
         frame: Output of :func:`load_observations`.
-        horizon: Forward horizon in trading days (used for annualisation).
         cost_bps: Per-side transaction cost in basis points.
 
     Returns:
-        ``(ls_sharpe, hit_rate, cum_return, returns)`` where ``returns`` is the
-        per-period net long-short return series.
+        ``(ls_spread, spread_tstat, n_long, n_short)``. The spread and t-stat
+        are ``0.0`` and the counts ``0`` when there are too few events to form
+        terciles of at least two observations each.
     """
     cost = cost_bps / 1e4
+    n = len(frame)
+    if n < _MIN_SPREAD_OBS:
+        return 0.0, 0.0, 0, 0
 
-    period_returns: list[float] = []
-    for _, group in frame.groupby("filing_date"):
-        ret = _tercile_long_short(group, cost)
-        if ret is not None:
-            period_returns.append(ret)
+    ranked = frame.sort_values("signal", kind="stable")
+    k = n // 3
+    if k < 2:
+        return 0.0, 0.0, 0, 0
 
-    if len(period_returns) < 2:
-        # Pooled single-sort fallback: treat the whole sample as one rebalance.
-        pooled = _tercile_long_short(frame, cost)
-        returns = pd.Series([pooled] if pooled is not None else [], dtype=float)
+    bottom = ranked.head(k)["fwd_return"].to_numpy(dtype=float)
+    top = ranked.tail(k)["fwd_return"].to_numpy(dtype=float)
+
+    # Long the top tercile, short the bottom; charge cost on both sides.
+    spread = float(top.mean() - bottom.mean()) - 2.0 * cost
+
+    if top.std(ddof=1) == 0.0 and bottom.std(ddof=1) == 0.0:
+        tstat = 0.0
     else:
-        returns = pd.Series(period_returns, dtype=float)
+        t, _ = ttest_ind(top, bottom, equal_var=False)
+        tstat = float(t) if np.isfinite(t) else 0.0
 
-    if returns.empty:
-        return 0.0, 0.0, 0.0, returns
-
-    hit_rate = float((returns > 0).mean())
-    cum_return = float((1.0 + returns).prod() - 1.0)
-
-    if len(returns) > 1 and returns.std(ddof=1) > 0:
-        # Each observation spans ``horizon`` trading days; scale to annual.
-        periods_per_year = _TRADING_DAYS_PER_YEAR / horizon
-        mean_r = returns.mean()
-        std_r = returns.std(ddof=1)
-        sharpe = float(mean_r / std_r * math.sqrt(periods_per_year))
-    else:
-        sharpe = 0.0
-
-    return sharpe, hit_rate, cum_return, returns
+    return spread, tstat, len(top), len(bottom)
 
 
 def run_backtest(
@@ -280,7 +246,7 @@ def run_backtest(
         )
 
     ic, ic_tstat, ic_method = compute_ic(frame)
-    ls_sharpe, hit_rate, cum_return, _ = compute_long_short(frame, horizon, cost_bps)
+    ls_spread, spread_tstat, n_long, n_short = compute_event_study_spread(frame, cost_bps)
 
     result = BacktestResult(
         signal=signal_col,
@@ -288,9 +254,8 @@ def run_backtest(
         n_obs=n_obs,
         ic=ic,
         ic_tstat=ic_tstat,
-        ls_sharpe=ls_sharpe,
-        hit_rate=hit_rate,
-        cum_return=cum_return,
+        ls_spread=ls_spread,
+        spread_tstat=spread_tstat,
         ic_method=ic_method,
     )
 
@@ -299,6 +264,8 @@ def run_backtest(
             "cost_bps": cost_bps,
             "ic_method": ic_method,
             "n_obs": n_obs,
+            "n_long": n_long,
+            "n_short": n_short,
         }
         session.add(
             BacktestRun(
@@ -307,9 +274,8 @@ def run_backtest(
                 config_json=json.dumps(config),
                 ic=ic,
                 ic_tstat=ic_tstat,
-                ls_sharpe=ls_sharpe,
-                hit_rate=hit_rate,
-                cum_return=cum_return,
+                ls_spread=ls_spread,
+                spread_tstat=spread_tstat,
             )
         )
         session.commit()
@@ -322,7 +288,7 @@ __all__ = [
     "run_backtest",
     "load_observations",
     "compute_ic",
-    "compute_long_short",
+    "compute_event_study_spread",
     "BacktestResult",
     "SIGNAL_COLUMNS",
 ]
