@@ -1,0 +1,82 @@
+name: Research Note
+
+# On-demand only: regenerates the LaTeX/PDF research note from a fresh pipeline
+# run and uploads it as a downloadable artifact. Not scheduled — SEC filings are
+# annual/quarterly, so there is nothing to refresh daily.
+on:
+  workflow_dispatch:
+    inputs:
+      tickers:
+        description: "Comma-separated tickers (blank = default universe)"
+        required: false
+        default: ""
+      years:
+        description: "Years of history to ingest"
+        required: false
+        default: "6"
+
+jobs:
+  research-note:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: filing_alpha
+          POSTGRES_USER: filing
+          POSTGRES_PASSWORD: filing
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U filing -d filing_alpha"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+psycopg://filing:filing@localhost:5432/filing_alpha
+      # EDGAR requires a declared identity on every request.
+      SEC_IDENTITY: "FilingAlpha CI che240008027@iiti.ac.in"
+      # Optional: when set, the note's narrative is LLM-written; otherwise it
+      # falls back to the deterministic template.
+      LLM_PROVIDER: cerebras
+      CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python 3.11
+        run: uv venv --python 3.11
+
+      - name: Install dependencies
+        run: uv pip install -e ".[dev,report]"
+
+      - name: Install LaTeX (pdflatex + booktabs)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-latex-base texlive-latex-recommended texlive-latex-extra
+
+      - name: Apply migrations
+        run: uv run alembic upgrade head
+
+      - name: Run pipeline and generate the note
+        run: |
+          TICKERS="${{ github.event.inputs.tickers }}"
+          if [ -n "$TICKERS" ]; then
+            uv run python scripts/run_pipeline.py --years "${{ github.event.inputs.years }}" --tickers "$TICKERS" --report
+          else
+            uv run python scripts/run_pipeline.py --years "${{ github.event.inputs.years }}" --report
+          fi
+
+      - name: Upload research note
+        uses: actions/upload-artifact@v4
+        with:
+          name: filingalpha-research-note
+          path: |
+            reports/report.pdf
+            reports/report.tex
+            reports/figures/*.png
+          if-no-files-found: warn

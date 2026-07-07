@@ -37,7 +37,12 @@ __all__ = [
     "ingest_filings",
     "ingest_prices",
     "ingest_universe",
+    "ingest_market_benchmark",
+    "MARKET_TICKER",
 ]
+
+# Market benchmark used to compute excess (market-adjusted) forward returns.
+MARKET_TICKER = "SPY"
 
 # ---------------------------------------------------------------------------
 # Internal helpers
@@ -371,29 +376,40 @@ def ingest_prices(
     return ingested
 
 
-def ingest_universe(tickers: list[str], years: int = 6) -> None:
+def ingest_universe(
+    tickers: list[str],
+    years: int = 6,
+    forms: tuple[str, ...] = ("10-K", "10-Q"),
+) -> None:
     """Orchestrate full ingestion for a list of tickers.
 
     For each ticker the function:
 
     1. Upserts the company row.
-    2. Pulls the most recent ``years`` worth of 10-K filings (approximate: up
-       to ``years`` filings, one per fiscal year).
+    2. Pulls the most recent ``years`` worth of filings for each form in
+       ``forms``. 10-Ks file annually (~``years`` filings) while 10-Qs file
+       roughly three times a year, so the quarterly cap is scaled up.
     3. Pulls daily adjusted-close prices for the preceding ``years`` years.
+
+    Adding 10-Qs roughly quadruples the number of filing events per firm, which
+    is the cheapest way to raise the statistical power of the downstream
+    backtest.
 
     Failures for individual tickers are logged and do not abort the batch.
 
     Args:
         tickers: List of ticker symbols (case-insensitive).
         years: Look-back window in years for both filings and prices.
+        forms: SEC form types to ingest per company.
     """
     end_date = date.today()
     start_date = end_date.replace(year=end_date.year - years)
 
     logger.info(
-        "Starting universe ingestion: %d tickers, %d-year window",
+        "Starting universe ingestion: %d tickers, %d-year window, forms=%s",
         len(tickers),
         years,
+        ",".join(forms),
     )
 
     session: Session = SessionLocal()
@@ -407,12 +423,15 @@ def ingest_universe(tickers: list[str], years: int = 6) -> None:
                 logger.exception("Failed to ingest company %s; skipping", ticker)
                 continue
 
-            try:
-                ingest_filings(session, company, form="10-K", limit=years)
-                session.commit()
-            except Exception:
-                session.rollback()
-                logger.exception("Failed to ingest filings for %s; continuing with prices", ticker)
+            for form in forms:
+                # 10-Qs file ~3x/year, 10-Ks once — size the per-form cap to the window.
+                limit = years * 4 if form == "10-Q" else years
+                try:
+                    ingest_filings(session, company, form=form, limit=limit)
+                    session.commit()
+                except Exception:
+                    session.rollback()
+                    logger.exception("Failed to ingest %s filings for %s; continuing", form, ticker)
 
             try:
                 ingest_prices(session, company, start=start_date, end=end_date)
@@ -422,5 +441,42 @@ def ingest_universe(tickers: list[str], years: int = 6) -> None:
                 logger.exception("Failed to ingest prices for %s", ticker)
 
         logger.info("Universe ingestion complete")
+    finally:
+        session.close()
+
+
+def ingest_market_benchmark(years: int = 6) -> None:
+    """Ingest the market benchmark (``SPY``) price series, prices only.
+
+    Stores ``SPY`` as a price-only :class:`~core.models.Company` row (no filings)
+    so :mod:`pipeline.returns` can compute forward returns *in excess of the
+    market*. Idempotent: re-runs upsert prices and never duplicate the company.
+
+    Args:
+        years: Look-back window in years for the benchmark price history.
+    """
+    end_date = date.today()
+    start_date = end_date.replace(year=end_date.year - years)
+
+    session: Session = SessionLocal()
+    try:
+        benchmark: Optional[Company] = (
+            session.query(Company).filter_by(ticker=MARKET_TICKER).first()
+        )
+        if benchmark is None:
+            benchmark = Company(
+                ticker=MARKET_TICKER,
+                cik="0000884394",  # SPDR S&P 500 ETF Trust
+                name="SPDR S&P 500 ETF Trust",
+                sector="ETF",
+            )
+            session.add(benchmark)
+            session.flush()
+        ingest_prices(session, benchmark, start=start_date, end=end_date)
+        session.commit()
+        logger.info("Market benchmark %s prices ingested.", MARKET_TICKER)
+    except Exception:
+        session.rollback()
+        logger.exception("Failed to ingest market benchmark %s", MARKET_TICKER)
     finally:
         session.close()

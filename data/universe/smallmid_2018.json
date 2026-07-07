@@ -1,0 +1,1802 @@
+[
+  {
+    "ticker": "GYRE",
+    "cik": 1124105,
+    "market_cap": 701264855.96,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CAKE",
+    "cik": 887596,
+    "market_cap": 3993709341.48,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "IBRX",
+    "cik": 1326110,
+    "market_cap": 9122453179.62,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "ORN",
+    "cik": 1402829,
+    "market_cap": 664264945.8,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "PEGA",
+    "cik": 1013857,
+    "market_cap": 5143832164.53,
+    "sector": "Services"
+  },
+  {
+    "ticker": "PLXS",
+    "cik": 785786,
+    "market_cap": 7690865717.56,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "ACTG",
+    "cik": 934549,
+    "market_cap": 453003034.61,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "CNR",
+    "cik": 1710366,
+    "market_cap": 4121830100.49,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "ITGR",
+    "cik": 1114483,
+    "market_cap": 3188019812.99,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "RVRF",
+    "cik": 1641601,
+    "market_cap": 375032880.0,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "OMF",
+    "cik": 1584207,
+    "market_cap": 6982690580.22,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "TTD",
+    "cik": 1671933,
+    "market_cap": 8635890986.1,
+    "sector": "Services"
+  },
+  {
+    "ticker": "DJCO",
+    "cik": 783412,
+    "market_cap": 791418629.04,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "HUBG",
+    "cik": 940942,
+    "market_cap": 2675466062.5,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "RH",
+    "cik": 1528849,
+    "market_cap": 3006009982.86,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "MD",
+    "cik": 893949,
+    "market_cap": 2026768788.54,
+    "sector": "Services"
+  },
+  {
+    "ticker": "GIII",
+    "cik": 821002,
+    "market_cap": 1437010974.32,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "ALNT",
+    "cik": 46129,
+    "market_cap": 1659369419.88,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "FBK",
+    "cik": 1649749,
+    "market_cap": 2879646259.73,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "MYE",
+    "cik": 69488,
+    "market_cap": 1207092306.16,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "LWAY",
+    "cik": 814586,
+    "market_cap": 449134678.99,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "MWA",
+    "cik": 1350593,
+    "market_cap": 4177777928.68,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "TPC",
+    "cik": 77543,
+    "market_cap": 4198504113.12,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "KRG",
+    "cik": 1286043,
+    "market_cap": 5935635192.77,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "SYNA",
+    "cik": 817720,
+    "market_cap": 4726583796.0,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "PRGO",
+    "cik": 1585364,
+    "market_cap": 1376759285.11,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CBAN",
+    "cik": 711669,
+    "market_cap": 436708393.01,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "THRM",
+    "cik": 903129,
+    "market_cap": 1086531217.05,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "GTES",
+    "cik": 1718512,
+    "market_cap": 7312658159.66,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "UFPT",
+    "cik": 914156,
+    "market_cap": 2010056657.75,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "MTX",
+    "cik": 891014,
+    "market_cap": 2474497067.83,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "APOG",
+    "cik": 6845,
+    "market_cap": 1044491125.51,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "LNN",
+    "cik": 836157,
+    "market_cap": 1305265533.55,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "HLIT",
+    "cik": 851310,
+    "market_cap": 1616596855.01,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "EXPO",
+    "cik": 851520,
+    "market_cap": 2950962480.9,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CZNC",
+    "cik": 810958,
+    "market_cap": 420860601.04,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "TDAY",
+    "cik": 1579684,
+    "market_cap": 1228347280.32,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "SRCE",
+    "cik": 34782,
+    "market_cap": 1972686284.32,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "HLIO",
+    "cik": 1024795,
+    "market_cap": 2989704048.6,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CHDN",
+    "cik": 20212,
+    "market_cap": 6198146049.71,
+    "sector": "Services"
+  },
+  {
+    "ticker": "IRMD",
+    "cik": 1325618,
+    "market_cap": 1201093956.9,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "FRST",
+    "cik": 1325670,
+    "market_cap": 414229030.16,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "SAIC",
+    "cik": 1571123,
+    "market_cap": 4662710406.22,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ODC",
+    "cik": 74046,
+    "market_cap": 1469406909.17,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "ALV",
+    "cik": 1034670,
+    "market_cap": 8921463852.38,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "BCC",
+    "cik": 1328581,
+    "market_cap": 2851072292.59,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "CE",
+    "cik": 1306830,
+    "market_cap": 5419522476.58,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CMC",
+    "cik": 22444,
+    "market_cap": 7660125217.38,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CERS",
+    "cik": 1020214,
+    "market_cap": 585077419.37,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "URG",
+    "cik": 1375205,
+    "market_cap": 536398011.02,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "ATRC",
+    "cik": 1323885,
+    "market_cap": 1528344490.05,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CASH",
+    "cik": 907471,
+    "market_cap": 1839950640.75,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "SIG",
+    "cik": 832988,
+    "market_cap": 3400910039.39,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "NXST",
+    "cik": 1142417,
+    "market_cap": 5008390260.0,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "CPRX",
+    "cik": 1369568,
+    "market_cap": 3856222660.5,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "TLS",
+    "cik": 320121,
+    "market_cap": 336686287.5,
+    "sector": "Services"
+  },
+  {
+    "ticker": "FCF",
+    "cik": 712537,
+    "market_cap": 2087581930.97,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "GPK",
+    "cik": 1408075,
+    "market_cap": 3257720198.59,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "GATX",
+    "cik": 40211,
+    "market_cap": 6470732478.06,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "IOVA",
+    "cik": 1425205,
+    "market_cap": 1897635183.0,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "AB",
+    "cik": 825313,
+    "market_cap": 3349462225.59,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "ALRM",
+    "cik": 1459200,
+    "market_cap": 2292003423.77,
+    "sector": "Services"
+  },
+  {
+    "ticker": "OTEX",
+    "cik": 1002638,
+    "market_cap": 5360411569.43,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CBSH",
+    "cik": 22356,
+    "market_cap": 8424462094.28,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "ACGP",
+    "cik": 1642122,
+    "market_cap": 743142392.87,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "DNLI",
+    "cik": 1714899,
+    "market_cap": 4058207926.66,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "PRDO",
+    "cik": 1046568,
+    "market_cap": 2089895537.7,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ACCO",
+    "cik": 712034,
+    "market_cap": 388405316.26,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "QUAD",
+    "cik": 1481792,
+    "market_cap": 435162352.48,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "MGEE",
+    "cik": 1161728,
+    "market_cap": 3011417399.3,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "KE",
+    "cik": 1606757,
+    "market_cap": 589198662.5,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "HBIA",
+    "cik": 732417,
+    "market_cap": 790776149.0,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "SEDG",
+    "cik": 1419612,
+    "market_cap": 3147341953.5,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "IBCP",
+    "cik": 39311,
+    "market_cap": 746561058.68,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "PKOH",
+    "cik": 76282,
+    "market_cap": 562392500.91,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CAR",
+    "cik": 723612,
+    "market_cap": 5881257113.19,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ATEC",
+    "cik": 1350653,
+    "market_cap": 1430240565.83,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "PACB",
+    "cik": 1299130,
+    "market_cap": 512492777.79,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "GDOT",
+    "cik": 1386278,
+    "market_cap": 757280919.34,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "LKFN",
+    "cik": 721994,
+    "market_cap": 1561583578.08,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "PRSU",
+    "cik": 884219,
+    "market_cap": 1503121650.57,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ATEX",
+    "cik": 1304492,
+    "market_cap": 1748428038.21,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "CWEN",
+    "cik": 1567683,
+    "market_cap": 5742120118.16,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "FCCN",
+    "cik": 1131903,
+    "market_cap": 385115664.0,
+    "sector": "Services"
+  },
+  {
+    "ticker": "DKL",
+    "cik": 1552797,
+    "market_cap": 2698817945.8,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "FRHC",
+    "cik": 924805,
+    "market_cap": 7895710733.34,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "TCMD",
+    "cik": 1027838,
+    "market_cap": 683003568.29,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "OPLN",
+    "cik": 1395942,
+    "market_cap": 4545088109.06,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "LEG",
+    "cik": 58492,
+    "market_cap": 1592166771.93,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "TMP",
+    "cik": 1005817,
+    "market_cap": 1354729247.9,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "NBHC",
+    "cik": 1475841,
+    "market_cap": 2026784695.5,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "BRX",
+    "cik": 1581068,
+    "market_cap": 9956848455.75,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "KW",
+    "cik": 1408100,
+    "market_cap": 1521191763.0,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "APPN",
+    "cik": 1441683,
+    "market_cap": 1612864225.99,
+    "sector": "Services"
+  },
+  {
+    "ticker": "MTG",
+    "cik": 876437,
+    "market_cap": 5887889093.39,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "PAR",
+    "cik": 708821,
+    "market_cap": 697060747.37,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "UAMY",
+    "cik": 101538,
+    "market_cap": 1032853754.25,
+    "sector": "Unknown"
+  },
+  {
+    "ticker": "XENE",
+    "cik": 1582313,
+    "market_cap": 5774800119.25,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "FND",
+    "cik": 1507079,
+    "market_cap": 6443492347.48,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "LRN",
+    "cik": 1157408,
+    "market_cap": 3704764177.6,
+    "sector": "Services"
+  },
+  {
+    "ticker": "HBNC",
+    "cik": 706129,
+    "market_cap": 1041480958.55,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "LNTH",
+    "cik": 1521036,
+    "market_cap": 7148648002.29,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "FBRX",
+    "cik": 1419041,
+    "market_cap": 430669535.57,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "DBI",
+    "cik": 1319947,
+    "market_cap": 316848961.34,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "OIS",
+    "cik": 1121484,
+    "market_cap": 486362788.61,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "TGLS",
+    "cik": 1534675,
+    "market_cap": 1985325516.0,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "AWR",
+    "cik": 1056903,
+    "market_cap": 3236137346.25,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "SBRA",
+    "cik": 1492298,
+    "market_cap": 4927794687.19,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "HASI",
+    "cik": 1561894,
+    "market_cap": 5058366426.29,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "PZZA",
+    "cik": 901491,
+    "market_cap": 1210465125.18,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "BKTI",
+    "cik": 2186,
+    "market_cap": 308147506.83,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "TREE",
+    "cik": 1434621,
+    "market_cap": 567608776.5,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "ALSN",
+    "cik": 1411207,
+    "market_cap": 9939047659.32,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "APEI",
+    "cik": 1201792,
+    "market_cap": 999903500.09,
+    "sector": "Services"
+  },
+  {
+    "ticker": "MAGN",
+    "cik": 41719,
+    "market_cap": 445712016.3,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "UUUU",
+    "cik": 1385849,
+    "market_cap": 3653055511.4,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "CLF",
+    "cik": 764065,
+    "market_cap": 5675625728.35,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "DGICB",
+    "cik": 800457,
+    "market_cap": 889190472.0,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "CELC",
+    "cik": 1603454,
+    "market_cap": 4874190336.78,
+    "sector": "Services"
+  },
+  {
+    "ticker": "OPTU",
+    "cik": 1702780,
+    "market_cap": 649928178.55,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "NBR",
+    "cik": 1163739,
+    "market_cap": 1222290051.52,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "RCKY",
+    "cik": 895456,
+    "market_cap": 311307455.43,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "WLFC",
+    "cik": 1018164,
+    "market_cap": 1783566028.98,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "MUSA",
+    "cik": 1573516,
+    "market_cap": 9721675951.71,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "CHCT",
+    "cik": 1631569,
+    "market_cap": 523720963.51,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "NEO",
+    "cik": 1077183,
+    "market_cap": 1845100932.53,
+    "sector": "Services"
+  },
+  {
+    "ticker": "RGEN",
+    "cik": 730272,
+    "market_cap": 8292501547.54,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "BKH",
+    "cik": 1130464,
+    "market_cap": 5788782162.42,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "BCRX",
+    "cik": 882796,
+    "market_cap": 2526376733.75,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "SHOO",
+    "cik": 913241,
+    "market_cap": 3158752633.14,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "CUZ",
+    "cik": 25232,
+    "market_cap": 4929628226.04,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "PFS",
+    "cik": 1178970,
+    "market_cap": 3080615481.14,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "KMT",
+    "cik": 55242,
+    "market_cap": 2726797392.31,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "PUMP",
+    "cik": 1680247,
+    "market_cap": 1814731268.19,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "NPK",
+    "cik": 80172,
+    "market_cap": 895755375.0,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "BELFB",
+    "cik": 729580,
+    "market_cap": 4418141910.82,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "PIPR",
+    "cik": 1230245,
+    "market_cap": 5145345402.81,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "PDFS",
+    "cik": 1120914,
+    "market_cap": 2638084966.93,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CSW",
+    "cik": 1624794,
+    "market_cap": 4612048851.58,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "KNSL",
+    "cik": 1669162,
+    "market_cap": 7574521475.25,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "INGR",
+    "cik": 1046257,
+    "market_cap": 6148258447.5,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "DIN",
+    "cik": 49754,
+    "market_cap": 467575558.24,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "CACC",
+    "cik": 885550,
+    "market_cap": 6577920095.84,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "TXNM",
+    "cik": 1108426,
+    "market_cap": 6324705710.66,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "KBR",
+    "cik": 1357615,
+    "market_cap": 4230980729.66,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "OSUR",
+    "cik": 1116463,
+    "market_cap": 307064549.01,
+    "sector": "Manufacturing"
+  },
+  {
+    "ticker": "PRI",
+    "cik": 1475922,
+    "market_cap": 8852828487.92,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "FCPT",
+    "cik": 1650132,
+    "market_cap": 2807384450.89,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "HKHC",
+    "cik": 88000,
+    "market_cap": 633228233.03,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "KFY",
+    "cik": 56679,
+    "market_cap": 3625742872.62,
+    "sector": "Services"
+  },
+  {
+    "ticker": "MNRO",
+    "cik": 876427,
+    "market_cap": 517035059.9,
+    "sector": "Services"
+  },
+  {
+    "ticker": "GVA",
+    "cik": 861459,
+    "market_cap": 7016533025.91,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "WABC",
+    "cik": 311094,
+    "market_cap": 1382266115.91,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "VIRT",
+    "cik": 1592386,
+    "market_cap": 5283253126.34,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "HLI",
+    "cik": 1302215,
+    "market_cap": 9568178279.6,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "HVT-A",
+    "cik": 216085,
+    "market_cap": 452118468.23,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "MUX",
+    "cik": 314203,
+    "market_cap": 1075321566.0,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "EIG",
+    "cik": 1379041,
+    "market_cap": 925645842.16,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "SLP",
+    "cik": 1023459,
+    "market_cap": 367939187.02,
+    "sector": "Services"
+  },
+  {
+    "ticker": "KMX",
+    "cik": 1170010,
+    "market_cap": 7487229186.77,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "CCOI",
+    "cik": 1158324,
+    "market_cap": 671541453.19,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "IT",
+    "cik": 749251,
+    "market_cap": 9035827388.95,
+    "sector": "Services"
+  },
+  {
+    "ticker": "FCFS",
+    "cik": 840489,
+    "market_cap": 9313104019.37,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "DPZ",
+    "cik": 1286681,
+    "market_cap": 9918024152.98,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "STAG",
+    "cik": 1479094,
+    "market_cap": 7537302917.99,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "BAND",
+    "cik": 1514416,
+    "market_cap": 1821784817.15,
+    "sector": "Services"
+  },
+  {
+    "ticker": "YELP",
+    "cik": 1345016,
+    "market_cap": 1319776896.0,
+    "sector": "Services"
+  },
+  {
+    "ticker": "GTN-A",
+    "cik": 43196,
+    "market_cap": 709922708.37,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "SPCE",
+    "cik": 1706946,
+    "market_cap": 328001460.6,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "ACM",
+    "cik": 868857,
+    "market_cap": 9127697346.96,
+    "sector": "Services"
+  },
+  {
+    "ticker": "NC",
+    "cik": 789933,
+    "market_cap": 389924936.2,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "APLE",
+    "cik": 1418121,
+    "market_cap": 4022591336.29,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "OLP",
+    "cik": 712770,
+    "market_cap": 533703678.1,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "CRK",
+    "cik": 23194,
+    "market_cap": 4199850453.62,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "XIFR",
+    "cik": 1603145,
+    "market_cap": 1134101698.68,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "PARR",
+    "cik": 821483,
+    "market_cap": 2739381906.07,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "GNW",
+    "cik": 1276520,
+    "market_cap": 3623267576.37,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "NFG",
+    "cik": 70145,
+    "market_cap": 7455523858.88,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "AX",
+    "cik": 1299709,
+    "market_cap": 5474008617.01,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "CZFS",
+    "cik": 739421,
+    "market_cap": 354700374.05,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "UCB",
+    "cik": 857855,
+    "market_cap": 4264632627.59,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "MG",
+    "cik": 1436126,
+    "market_cap": 598789926.71,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CRVL",
+    "cik": 874866,
+    "market_cap": 3193037828.23,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "ACNB",
+    "cik": 715579,
+    "market_cap": 617011679.78,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "RUSHB",
+    "cik": 1012019,
+    "market_cap": 5899140294.4,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "CNS",
+    "cik": 1284812,
+    "market_cap": 4029171335.47,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "RES",
+    "cik": 742278,
+    "market_cap": 1305447407.56,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "HLF",
+    "cik": 1180262,
+    "market_cap": 1300014472.69,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "HLX",
+    "cik": 866829,
+    "market_cap": 1307282288.02,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "CSV",
+    "cik": 1016281,
+    "market_cap": 620290607.3,
+    "sector": "Services"
+  },
+  {
+    "ticker": "RBTK",
+    "cik": 1594204,
+    "market_cap": 693545931.25,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "BJRI",
+    "cik": 1013488,
+    "market_cap": 1258073083.47,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "LAD",
+    "cik": 1023128,
+    "market_cap": 6661580161.2,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "VRTS",
+    "cik": 883237,
+    "market_cap": 986147577.0,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "NG",
+    "cik": 1173420,
+    "market_cap": 2790644763.62,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "IBP",
+    "cik": 1580905,
+    "market_cap": 6285806654.52,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "MTRX",
+    "cik": 866273,
+    "market_cap": 390216496.28,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "BBCP",
+    "cik": 1703956,
+    "market_cap": 584059745.49,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "IDCC",
+    "cik": 1405495,
+    "market_cap": 7129609321.35,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "RYN",
+    "cik": 52827,
+    "market_cap": 6589371610.04,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "ISSC",
+    "cik": 836690,
+    "market_cap": 320101232.91,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CNX",
+    "cik": 1070412,
+    "market_cap": 4772039180.86,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "BHB",
+    "cik": 743367,
+    "market_cap": 654114037.24,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "EEFT",
+    "cik": 1029199,
+    "market_cap": 2681628882.04,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "OCSL",
+    "cik": 1414932,
+    "market_cap": 1029719726.91,
+    "sector": "Unknown"
+  },
+  {
+    "ticker": "CEVA",
+    "cik": 1173489,
+    "market_cap": 1179008487.58,
+    "sector": "Services"
+  },
+  {
+    "ticker": "MGY",
+    "cik": 1698990,
+    "market_cap": 4952905130.01,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "MSB",
+    "cik": 65172,
+    "market_cap": 324720247.5,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "VALU",
+    "cik": 717720,
+    "market_cap": 364975823.47,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "SCVL",
+    "cik": 895447,
+    "market_cap": 433063357.42,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "OLLI",
+    "cik": 1639300,
+    "market_cap": 4347196449.11,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "HOMB",
+    "cik": 1331520,
+    "market_cap": 5901413140.23,
+    "sector": "Finance"
+  },
+  {
+    "ticker": "ADT",
+    "cik": 1703056,
+    "market_cap": 4859923037.74,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ANF",
+    "cik": 1018840,
+    "market_cap": 4065945877.02,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "TMQ",
+    "cik": 1543418,
+    "market_cap": 579753328.94,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "CHRD",
+    "cik": 1486159,
+    "market_cap": 6563921539.8,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "CWCO",
+    "cik": 928340,
+    "market_cap": 471845599.44,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "HNRG",
+    "cik": 788965,
+    "market_cap": 826195804.12,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "RNG",
+    "cik": 1384905,
+    "market_cap": 3117862922.31,
+    "sector": "Services"
+  },
+  {
+    "ticker": "BKE",
+    "cik": 885245,
+    "market_cap": 2227642125.11,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "MTDR",
+    "cik": 1520006,
+    "market_cap": 6196493716.78,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "AEO",
+    "cik": 919012,
+    "market_cap": 2996211053.41,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "RMR",
+    "cik": 1644378,
+    "market_cap": 357080718.66,
+    "sector": "Services"
+  },
+  {
+    "ticker": "BOOT",
+    "cik": 1610250,
+    "market_cap": 5389104310.91,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "HE",
+    "cik": 354707,
+    "market_cap": 2342665365.0,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "MRTN",
+    "cik": 799167,
+    "market_cap": 1425362132.43,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "SPSC",
+    "cik": 1092699,
+    "market_cap": 2161276727.53,
+    "sector": "Services"
+  },
+  {
+    "ticker": "MCS",
+    "cik": 62234,
+    "market_cap": 764828189.61,
+    "sector": "Services"
+  },
+  {
+    "ticker": "BLMN",
+    "cik": 1546417,
+    "market_cap": 767960177.25,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "ASTH",
+    "cik": 1083446,
+    "market_cap": 2206957851.96,
+    "sector": "Services"
+  },
+  {
+    "ticker": "DMLP",
+    "cik": 1172358,
+    "market_cap": 1236787143.0,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "VRNS",
+    "cik": 1361113,
+    "market_cap": 4733143308.49,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ABM",
+    "cik": 771497,
+    "market_cap": 2663674640.32,
+    "sector": "Services"
+  },
+  {
+    "ticker": "VLGEA",
+    "cik": 103595,
+    "market_cap": 624960531.5,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "BL",
+    "cik": 1666134,
+    "market_cap": 1662450396.73,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ANDE",
+    "cik": 821026,
+    "market_cap": 2420562362.83,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "SITE",
+    "cik": 1650729,
+    "market_cap": 5167668626.57,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "CAPL",
+    "cik": 1538849,
+    "market_cap": 849696968.84,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "PLUS",
+    "cik": 1022408,
+    "market_cap": 2087942290.95,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "SHEN",
+    "cik": 354963,
+    "market_cap": 854724904.9,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "FWRD",
+    "cik": 912728,
+    "market_cap": 470264430.4,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "WU",
+    "cik": 1365135,
+    "market_cap": 2355760672.24,
+    "sector": "Services"
+  },
+  {
+    "ticker": "BZH",
+    "cik": 915840,
+    "market_cap": 798147710.85,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "TBRG",
+    "cik": 1169445,
+    "market_cap": 392977374.64,
+    "sector": "Services"
+  },
+  {
+    "ticker": "GHC",
+    "cik": 104889,
+    "market_cap": 4996044988.39,
+    "sector": "Services"
+  },
+  {
+    "ticker": "EVC",
+    "cik": 1109116,
+    "market_cap": 1107231310.82,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "ABG",
+    "cik": 1144980,
+    "market_cap": 3820019161.91,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "WK",
+    "cik": 1445305,
+    "market_cap": 2752653387.98,
+    "sector": "Services"
+  },
+  {
+    "ticker": "ACIW",
+    "cik": 935036,
+    "market_cap": 5007848767.56,
+    "sector": "Services"
+  },
+  {
+    "ticker": "BNED",
+    "cik": 1634117,
+    "market_cap": 471228667.21,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "CTGO",
+    "cik": 1502377,
+    "market_cap": 484338854.1,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "BBWI",
+    "cik": 701985,
+    "market_cap": 4607703145.34,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "ATNI",
+    "cik": 879585,
+    "market_cap": 415744467.15,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "PAMT",
+    "cik": 798287,
+    "market_cap": 308912745.75,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "GIC",
+    "cik": 945114,
+    "market_cap": 1344494995.51,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "CVSA",
+    "cik": 730464,
+    "market_cap": 4339958977.57,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CALX",
+    "cik": 1406666,
+    "market_cap": 2268736355.97,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "SEB",
+    "cik": 88121,
+    "market_cap": 4538109408.43,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "FDS",
+    "cik": 1013237,
+    "market_cap": 8442549571.1,
+    "sector": "Services"
+  },
+  {
+    "ticker": "LSTR",
+    "cik": 853816,
+    "market_cap": 7098121041.89,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "WEX",
+    "cik": 1309108,
+    "market_cap": 4784550224.99,
+    "sector": "Services"
+  },
+  {
+    "ticker": "CARS",
+    "cik": 1683606,
+    "market_cap": 600957540.25,
+    "sector": "Services"
+  },
+  {
+    "ticker": "YORW",
+    "cik": 108985,
+    "market_cap": 498599271.35,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "CTOS",
+    "cik": 1709682,
+    "market_cap": 2715547787.31,
+    "sector": "Services"
+  },
+  {
+    "ticker": "HURN",
+    "cik": 1289848,
+    "market_cap": 1600593931.59,
+    "sector": "Services"
+  },
+  {
+    "ticker": "LAUR",
+    "cik": 912766,
+    "market_cap": 5195993938.17,
+    "sector": "Services"
+  },
+  {
+    "ticker": "MHO",
+    "cik": 799292,
+    "market_cap": 4200136730.0,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "TSSI",
+    "cik": 1320760,
+    "market_cap": 317797173.35,
+    "sector": "Services"
+  },
+  {
+    "ticker": "DFIN",
+    "cik": 1669811,
+    "market_cap": 1013035287.19,
+    "sector": "Services"
+  },
+  {
+    "ticker": "OII",
+    "cik": 73756,
+    "market_cap": 3992802195.71,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "PENN",
+    "cik": 921738,
+    "market_cap": 2928492845.15,
+    "sector": "Services"
+  },
+  {
+    "ticker": "BYD",
+    "cik": 906553,
+    "market_cap": 6667414766.36,
+    "sector": "Services"
+  },
+  {
+    "ticker": "SGRY",
+    "cik": 1638833,
+    "market_cap": 2069068682.93,
+    "sector": "Services"
+  },
+  {
+    "ticker": "LIND",
+    "cik": 1512499,
+    "market_cap": 1939791979.98,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "UVV",
+    "cik": 102037,
+    "market_cap": 1340634872.66,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "EGY",
+    "cik": 894627,
+    "market_cap": 527569900.85,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "KELYB",
+    "cik": 55135,
+    "market_cap": 633406117.17,
+    "sector": "Services"
+  },
+  {
+    "ticker": "JBLU",
+    "cik": 1158463,
+    "market_cap": 2232113364.0,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "GOGO",
+    "cik": 1537054,
+    "market_cap": 430058512.17,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "NCMI",
+    "cik": 1377630,
+    "market_cap": 351676083.75,
+    "sector": "Services"
+  },
+  {
+    "ticker": "VRRM",
+    "cik": 1682745,
+    "market_cap": 683579938.5,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "MSIF",
+    "cik": 1535778,
+    "market_cap": 527365018.46,
+    "sector": "Unknown"
+  },
+  {
+    "ticker": "BAH",
+    "cik": 1443646,
+    "market_cap": 7462296177.42,
+    "sector": "Services"
+  },
+  {
+    "ticker": "IMKTA",
+    "cik": 50493,
+    "market_cap": 1697907259.05,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "RLGT",
+    "cik": 1171155,
+    "market_cap": 436471112.83,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "PRKS",
+    "cik": 1564902,
+    "market_cap": 2221026029.01,
+    "sector": "Services"
+  },
+  {
+    "ticker": "PLAY",
+    "cik": 1525769,
+    "market_cap": 411202352.46,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "SGU",
+    "cik": 1002590,
+    "market_cap": 424542763.71,
+    "sector": "Retail"
+  },
+  {
+    "ticker": "SWX",
+    "cik": 1692115,
+    "market_cap": 6581047223.98,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "LPG",
+    "cik": 1596993,
+    "market_cap": 1542743535.61,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "ASPN",
+    "cik": 1145986,
+    "market_cap": 466600069.87,
+    "sector": "Wholesale"
+  },
+  {
+    "ticker": "GLAD",
+    "cik": 1143513,
+    "market_cap": 428364567.56,
+    "sector": "Unknown"
+  },
+  {
+    "ticker": "LBTYK",
+    "cik": 1570585,
+    "market_cap": 3695405089.59,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "SLRC",
+    "cik": 1418076,
+    "market_cap": 677568558.44,
+    "sector": "Unknown"
+  },
+  {
+    "ticker": "XPRO",
+    "cik": 1575828,
+    "market_cap": 1619295906.44,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "CWST",
+    "cik": 911177,
+    "market_cap": 6001597836.29,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "KBH",
+    "cik": 795266,
+    "market_cap": 3814698971.94,
+    "sector": "Construction"
+  },
+  {
+    "ticker": "ORA",
+    "cik": 1296445,
+    "market_cap": 7135986975.39,
+    "sector": "Transport/Utilities"
+  },
+  {
+    "ticker": "TTI",
+    "cik": 844965,
+    "market_cap": 1606829666.74,
+    "sector": "Mining"
+  },
+  {
+    "ticker": "ZUMZ",
+    "cik": 1318008,
+    "market_cap": 307917923.75,
+    "sector": "Retail"
+  }
+]

@@ -42,7 +42,7 @@ from scipy.stats import spearmanr, ttest_ind
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from core.models import BacktestRun, ForwardReturn, Signal
+from core.models import BacktestRun, Filing, ForwardReturn, Signal
 
 logger = logging.getLogger(__name__)
 
@@ -77,15 +77,21 @@ class BacktestResult:
     ls_spread: float  # top-minus-bottom tercile mean forward return (net of cost)
     spread_tstat: float  # Welch two-sample t-stat of the tercile spread
     ic_method: str
+    form: str | None = None  # filing form the backtest was restricted to, if any
 
 
-def load_observations(session: Session, signal_col: str, horizon: int) -> pd.DataFrame:
+def load_observations(
+    session: Session, signal_col: str, horizon: int, form: str | None = None
+) -> pd.DataFrame:
     """Load aligned (filing_date, signal, forward_return) observations.
 
     Args:
         session: Active database session.
         signal_col: Name of the signal column on :class:`Signal`.
         horizon: Forward horizon in trading days.
+        form: If given, restrict to filings of this form type (e.g. ``"10-K"``).
+            These text-change signals are an annual-report phenomenon, so the
+            headline backtest restricts to 10-Ks; pooling 10-Qs dilutes them.
 
     Returns:
         DataFrame with columns ``filing_date``, ``signal``, ``fwd_return``,
@@ -95,11 +101,14 @@ def load_observations(session: Session, signal_col: str, horizon: int) -> pd.Dat
         raise ValueError(f"Unknown signal column: {signal_col!r}")
 
     column = getattr(Signal, signal_col)
-    rows = session.execute(
+    query = (
         select(Signal.filing_date, column, ForwardReturn.fwd_return)
         .join(ForwardReturn, ForwardReturn.filing_id == Signal.filing_id)
         .where(ForwardReturn.horizon_days == horizon)
-    ).all()
+    )
+    if form is not None:
+        query = query.join(Filing, Filing.id == Signal.filing_id).where(Filing.form_type == form)
+    rows = session.execute(query).all()
 
     frame = pd.DataFrame(rows, columns=["filing_date", "signal", "fwd_return"])
     frame = frame.dropna(subset=["signal", "fwd_return"]).reset_index(drop=True)
@@ -219,6 +228,7 @@ def run_backtest(
     horizon: int,
     cost_bps: float = 10.0,
     persist: bool = True,
+    form: str | None = None,
 ) -> BacktestResult:
     """Backtest one signal at one horizon and persist the result.
 
@@ -228,13 +238,17 @@ def run_backtest(
         horizon: Forward horizon in trading days.
         cost_bps: Per-side transaction cost in basis points.
         persist: If ``True``, write a :class:`BacktestRun` row.
+        form: If given, restrict the backtest to filings of this form type
+            (e.g. ``"10-K"``). The text-change signals are an annual-report
+            phenomenon, so the headline backtest runs on 10-Ks; pooling 10-Qs
+            dilutes them.
 
     Returns:
         The computed :class:`BacktestResult`. Metrics are reported honestly: a
         weak or insignificant signal yields a near-zero IC and Sharpe rather
         than a fabricated edge.
     """
-    frame = load_observations(session, signal_col, horizon)
+    frame = load_observations(session, signal_col, horizon, form=form)
     n_obs = len(frame)
 
     if n_obs < 3:
@@ -257,6 +271,7 @@ def run_backtest(
         ls_spread=ls_spread,
         spread_tstat=spread_tstat,
         ic_method=ic_method,
+        form=form,
     )
 
     if persist:
@@ -266,6 +281,7 @@ def run_backtest(
             "n_obs": n_obs,
             "n_long": n_long,
             "n_short": n_short,
+            "form": form,
         }
         session.add(
             BacktestRun(

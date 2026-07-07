@@ -25,7 +25,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from core.models import ForwardReturn, ModelRun, Signal
+from core.models import Filing, ForwardReturn, ModelRun, Signal
 
 logger = logging.getLogger(__name__)
 
@@ -54,13 +54,18 @@ class WalkForwardResult:
     fold_boundaries: list[dict[str, str]] = field(default_factory=list)
 
 
-def load_feature_matrix(session: Session, features: list[str], horizon: int) -> pd.DataFrame:
+def load_feature_matrix(
+    session: Session, features: list[str], horizon: int, form: str | None = None
+) -> pd.DataFrame:
     """Load a date-sorted feature matrix with the binary forward-return label.
 
     Args:
         session: Active database session.
         features: Signal column names to use as features.
         horizon: Forward horizon in trading days.
+        form: If given, restrict to filings of this form type (e.g. ``"10-K"``),
+            matching the form-aware backtest so the model is trained and scored
+            on the same population.
 
     Returns:
         DataFrame sorted by ``filing_date`` with the feature columns plus
@@ -68,12 +73,14 @@ def load_feature_matrix(session: Session, features: list[str], horizon: int) -> 
         rows with any null feature or null return dropped.
     """
     cols = [getattr(Signal, f) for f in features]
-    rows = session.execute(
+    query = (
         select(Signal.filing_date, *cols, ForwardReturn.fwd_return)
         .join(ForwardReturn, ForwardReturn.filing_id == Signal.filing_id)
         .where(ForwardReturn.horizon_days == horizon)
-        .order_by(Signal.filing_date.asc())
-    ).all()
+    )
+    if form is not None:
+        query = query.join(Filing, Filing.id == Signal.filing_id).where(Filing.form_type == form)
+    rows = session.execute(query.order_by(Signal.filing_date.asc())).all()
 
     frame = pd.DataFrame(rows, columns=["filing_date", *features, "fwd_return"])
     frame = frame.dropna(subset=[*features, "fwd_return"]).reset_index(drop=True)
@@ -134,6 +141,7 @@ def run_walkforward(
     n_folds: int = 5,
     persist: bool = True,
     random_state: int = 42,
+    form: str | None = None,
 ) -> WalkForwardResult:
     """Run an expanding-window walk-forward classification and persist results.
 
@@ -150,13 +158,14 @@ def run_walkforward(
         n_folds: Number of expanding-window folds.
         persist: If ``True``, write a :class:`ModelRun` row.
         random_state: Seed for reproducibility.
+        form: If given, restrict to filings of this form type (e.g. ``"10-K"``).
 
     Returns:
         The :class:`WalkForwardResult` with OOS accuracy/AUC and averaged
         feature importances.
     """
     feats = list(features) if features is not None else list(DEFAULT_FEATURES)
-    frame = load_feature_matrix(session, feats, horizon)
+    frame = load_feature_matrix(session, feats, horizon, form=form)
     n = len(frame)
 
     bounds = _fold_indices(n, n_folds) if n >= 2 else []
@@ -254,6 +263,7 @@ def run_walkforward(
                 metrics_json=json.dumps(
                     {
                         "horizon_days": horizon,
+                        "form": form,
                         "n_folds": folds_used,
                         "n_oos": n_oos,
                         "oos_accuracy": accuracy,

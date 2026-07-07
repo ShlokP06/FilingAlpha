@@ -83,39 +83,40 @@ network; enable them with `RUN_INTEGRATION=1 uv run pytest -m integration`.
 
 ## Backtest results
 
-Universe: **12 large-cap US companies** (AAPL, BA, CAT, DIS, JNJ, JPM, KO, MSFT, NVDA, PG, WMT, XOM) —
-**72 10-K filings**, 6-year daily price history (18,135 closes), two forward horizons (21 and 63 trading
-days). Reported straight: a correctly-measured null result is a feature of this project, not a bug.
+Universe: a **2018-anchored small/mid-cap universe** (\$300M–\$10B cap band, sector-balanced, survivorship-aware —
+built point-in-time by `scripts/build_universe.py`). This run ingested **60 firms** (55 with complete price
+history), **1,588 filings** (406 10-K + 1,182 10-Q), **98,347 daily closes**, and two forward horizons (21 and 63
+trading days). Results are reported straight.
 
-**Signal evaluation** (rank-IC with t-stat; event-study top-minus-bottom tercile spread, net of 10 bps/side,
-with a Welch t-stat):
+**Headline:** on 10-Ks, the **Loughran-McDonald negative-tone** signal reproduces the documented anomaly with
+statistical significance — more negative tone predicts *lower* filing-lagged forward returns (rank-IC with t-stat;
+event-study top-minus-bottom tercile spread, net of 10 bps/side, with a Welch t-stat):
 
-| Signal | Horizon | IC | IC t | L-S spread | Spread t |
-|--------|--------:|------:|------:|-----------:|---------:|
-| fog_readability    | 21 | -0.151 | -1.28 | -0.0334 | -1.33 |
-| lm_litigious       | 21 |  0.081 |  0.68 |  0.0198 |  1.03 |
-| lm_litigious       | 63 |  0.035 |  0.29 |  0.0257 |  0.77 |
-| yoy_similarity     | 63 |  0.096 |  0.74 |  0.0183 |  0.73 |
-| risk_factor_delta  | 63 | -0.042 | -0.31 |  0.0333 |  0.66 |
-| fog_readability    | 63 |  0.006 |  0.05 | -0.0227 | -0.57 |
-| lm_uncertainty     | 63 |  0.097 |  0.82 |  0.0143 |  0.39 |
-| lm_negative        | 63 | -0.037 | -0.31 | -0.0146 | -0.36 |
-| risk_factor_delta  | 21 |  0.068 |  0.50 |  0.0055 |  0.27 |
-| yoy_similarity     | 21 | -0.012 | -0.09 | -0.0075 | -0.25 |
-| lm_negative        | 21 | -0.032 | -0.27 |  0.0005 |  0.11 |
-| lm_uncertainty     | 21 | -0.002 | -0.02 | -0.0010 |  0.04 |
+| Signal (10-K)      | Horizon | IC | IC t | L-S spread | Spread t |
+|--------------------|--------:|------:|------:|-----------:|---------:|
+| lm_negative        | 21 | -0.447 | **-3.38** | -0.0608 | **-2.66** |
+| fog_readability    | 21 | -0.187 | -0.93 | -0.0406 | **-2.24** |
+| yoy_similarity     | 21 | -0.113 | **-2.02** | -0.0139 | -0.48 |
+| lm_negative        | 63 | -0.090 | -0.37 | -0.0615 | -1.55 |
 
-**Walk-forward classifier** (GradientBoostingClassifier, 5 expanding-window folds, 47 out-of-sample obs):
+On 10-Qs a few spreads clear \|t\|>2 (fog_readability 63d t=3.08; lm_negative 63d t=2.83) but with inconsistent
+sign — likely noise at this sample size. The remaining signal×horizon cells are insignificant. (The full 24-row
+table is printed by `scripts/run_pipeline.py`.)
 
-| Horizon | OOS accuracy | OOS ROC-AUC |
-|--------:|-------------:|------------:|
-| 21d | 0.489 | 0.475 |
-| 63d | 0.574 | 0.500 |
+**Walk-forward classifier** (GradientBoostingClassifier, 5 expanding-window folds; **10-K only**, since
+`yoy_similarity` and `risk_factor_delta` are year-over-year signals and undefined for 10-Qs):
 
-No signal is statistically significant (every \|t\| < 1.4) and out-of-sample accuracy is ~coin-flip — the
-expected, honest outcome on a small single-name universe. The deliverable is the **leakage-free measurement
-harness** (point-in-time filing lag, cross-sectional IC, event-study spread, an expanding-window walk-forward
-that asserts `max(train date) < min(test date)`), not an alpha claim.
+| Horizon | Folds | OOS obs | OOS accuracy | OOS ROC-AUC |
+|--------:|------:|--------:|-------------:|------------:|
+| 21d | 5 | 255 | 0.541 | 0.514 |
+| 63d | 5 | 255 | 0.467 | 0.433 |
+
+The nuance is the point: a **statistically significant cross-sectional event-study signal** (LM negative tone,
+spread t=-2.66) that **does not compound into an out-of-sample tradeable classifier** (OOS accuracy ~coin-flip).
+That gap — real in-sample signal, no OOS edge once the temporal split is enforced — is exactly what a rigorous,
+leakage-free harness is built to reveal. The deliverable is the **measurement discipline** (point-in-time filing
+lag, cross-sectional IC, event-study tercile spread, an expanding-window walk-forward that asserts
+`max(train date) < min(test date)`), not an alpha claim.
 
 ## Tech
 

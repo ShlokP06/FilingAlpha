@@ -18,3 +18,15 @@ PLAN.md
 frontend/node_modules/
 frontend/dist/
 frontend/.env.local
+
+# generated report artifacts: ignore figures + LaTeX build files, but keep a
+# committed sample PDF (reports/sample_report.pdf) as a tangible artifact.
+reports/figures/
+reports/*.tex
+reports/*.aux
+reports/*.log
+reports/*.out
+reports/report.pdf
+reports/**/*.log
+reports/reports/
+!reports/sample_report.pdf

@@ -9,6 +9,7 @@ upserts a ``Signal`` row idempotently.
 from __future__ import annotations
 
 import logging
+from datetime import date
 from pathlib import Path
 
 from sqlalchemy import select
@@ -22,6 +23,10 @@ from pipeline.signals.similarity import yoy_similarity
 
 logger = logging.getLogger(__name__)
 
+# Year-over-year comparison tolerance: a prior filing qualifies as the
+# "same period last year" if its reference date is 365 +/- 90 days earlier.
+_YOY_TOLERANCE_DAYS = 90
+
 
 def _read_full_text(filing: Filing) -> str:
     """Return the filing's cached full text, falling back to stored sections."""
@@ -33,6 +38,40 @@ def _read_full_text(filing: Filing) -> str:
             except OSError as exc:  # pragma: no cover - defensive
                 logger.warning("Could not read %s: %s", path, exc)
     return " ".join(filter(None, [filing.item1a_text, filing.mdna_text]))
+
+
+def _ref_date(filing: Filing) -> date:
+    """Reference date for year-over-year matching (period end, else filing date)."""
+    return filing.period_end or filing.filing_date
+
+
+def _prior_year_filing(filing: Filing, earlier: list[Filing]) -> Filing | None:
+    """Pick the same-period prior-year filing from chronologically earlier ones.
+
+    Among earlier same-form filings, returns the one whose reference date is
+    closest to one year before ``filing`` (within ``_YOY_TOLERANCE_DAYS``). For
+    annual 10-Ks this is the immediately preceding filing; for quarterly 10-Qs
+    it is the same quarter a year earlier, which avoids comparing, say, a Q3
+    against a Q2 and picking up seasonal rather than informative text change.
+
+    Args:
+        filing: The filing whose prior-year comparison base is wanted.
+        earlier: Chronologically earlier filings of the same company and form.
+
+    Returns:
+        The best matching prior-year filing, or None if none falls in range.
+    """
+    target = _ref_date(filing)
+    best: Filing | None = None
+    best_gap: int | None = None
+    for candidate in earlier:
+        days = (target - _ref_date(candidate)).days
+        if days <= 0:
+            continue
+        gap = abs(days - 365)
+        if gap <= _YOY_TOLERANCE_DAYS and (best_gap is None or gap < best_gap):
+            best, best_gap = candidate, gap
+    return best
 
 
 def compute_signals(session: Session) -> int:
@@ -62,19 +101,19 @@ def compute_signals(session: Session) -> int:
 
     written = 0
     for group in by_group.values():
-        prev: Filing | None = None
-        for filing in group:  # already chronologically ordered
+        for idx, filing in enumerate(group):  # group is chronologically ordered
             full_text = _read_full_text(filing)
             tone = lm_tone(full_text) if full_text else {}
 
             yoy = None
             rf_delta = None
-            if prev is not None:
-                prev_text = _read_full_text(prev)
-                if full_text and prev_text:
-                    yoy = yoy_similarity(full_text, prev_text)
-                if filing.item1a_text and prev.item1a_text:
-                    rf_delta = risk_factor_delta(filing.item1a_text, prev.item1a_text)
+            base = _prior_year_filing(filing, group[:idx])
+            if base is not None:
+                base_text = _read_full_text(base)
+                if full_text and base_text:
+                    yoy = yoy_similarity(full_text, base_text)
+                if filing.item1a_text and base.item1a_text:
+                    rf_delta = risk_factor_delta(filing.item1a_text, base.item1a_text)
 
             fog = fog_readability(filing.mdna_text or full_text)
 
@@ -98,7 +137,6 @@ def compute_signals(session: Session) -> int:
                 for key, val in values.items():
                     setattr(existing, key, val)
             written += 1
-            prev = filing
 
     session.commit()
     logger.info("Computed signals for %d filings.", written)
