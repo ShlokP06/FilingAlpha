@@ -35,6 +35,18 @@ class Company(Base):
     name: Mapped[str | None] = mapped_column(String(256))
     sector: Mapped[str | None] = mapped_column(String(128))
 
+    # Ingestion lifecycle. A firm is only ``complete`` once both its filings and
+    # prices have landed, so a run interrupted by rate limits never leaves a firm
+    # looking done. ``no_data`` is terminal (delisted/illiquid — stop hammering);
+    # ``failed`` is transient (retried by the next batch run). See pipeline.ingest.
+    ingest_state: Mapped[str] = mapped_column(
+        String(16), default="pending", server_default="pending", index=True
+    )
+    ingest_error: Mapped[str | None] = mapped_column(String(512))
+    updated_at: Mapped[datetime | None] = mapped_column(
+        DateTime, server_default=func.now(), onupdate=func.now()
+    )
+
     filings: Mapped[list["Filing"]] = relationship(back_populates="company")
     prices: Mapped[list["Price"]] = relationship(back_populates="company")
 

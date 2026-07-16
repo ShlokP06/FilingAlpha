@@ -3,6 +3,8 @@ __pycache__/
 .env
 .venv/
 data/raw/
+data/edgar_cache/
+logs/
 *.csv
 .DS_Store
 .vscode/

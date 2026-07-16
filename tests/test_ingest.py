@@ -22,9 +22,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from core.models import Base, Company, Filing, Price
 
-# ---------------------------------------------------------------------------
 # Shared fixtures
-# ---------------------------------------------------------------------------
 
 
 @pytest.fixture()
@@ -45,9 +43,7 @@ def session(sqlite_engine) -> Session:
     s.close()
 
 
-# ---------------------------------------------------------------------------
 # Helpers for building fake edgar / yfinance objects
-# ---------------------------------------------------------------------------
 
 
 def _make_edgar_company(
@@ -105,9 +101,7 @@ def _make_price_df(
     return df
 
 
-# ---------------------------------------------------------------------------
 # Tests: ingest_company
-# ---------------------------------------------------------------------------
 
 
 class TestIngestCompany:
@@ -169,10 +163,27 @@ class TestIngestCompany:
         session.commit()
         assert company.sector is None
 
+    def test_resolves_by_cik_when_provided(self, session: Session, monkeypatch):
+        """When a CIK is given, resolution goes through it (not the ticker)."""
+        from pipeline import ingest
 
-# ---------------------------------------------------------------------------
+        mock_co = _make_edgar_company(cik=999, name="Renamed Co", industry="X")
+        by_cik = MagicMock(return_value=mock_co)
+        # The ticker path must not be touched when a CIK is supplied.
+        by_ticker = MagicMock(side_effect=AssertionError("should resolve by CIK, not ticker"))
+        monkeypatch.setattr(ingest, "_edgar_company_by_cik", by_cik)
+        monkeypatch.setattr(ingest, "_edgar_company", by_ticker)
+
+        company = ingest.ingest_company(session, "NEWX", cik=999)
+        session.commit()
+
+        by_cik.assert_called_once_with(999)  # int-coerced CIK
+        assert company.ticker == "NEWX"  # the passed (historical) ticker is the identity
+        assert company.cik == "999"
+        assert company.name == "Renamed Co"
+
+
 # Tests: ingest_filings
-# ---------------------------------------------------------------------------
 
 
 def _patch_settings(monkeypatch, tmp_path) -> None:
@@ -340,10 +351,29 @@ class TestIngestFilings:
         count = ingest.ingest_filings(session, company, limit=6)
         assert count == 0
 
+    def test_transient_filing_error_reraises(self, session: Session, monkeypatch, tmp_path):
+        """A transient error fetching the filing list must propagate, not return 0.
 
-# ---------------------------------------------------------------------------
+        Returning 0 here would let the firm look 'complete' with no filings; the
+        re-raise lets ingest_universe mark it 'failed' and retry it next run.
+        """
+        from pipeline import ingest
+
+        _patch_settings(monkeypatch, tmp_path)
+
+        company = self._make_company(session)  # cik='320193' -> resolves by CIK
+        monkeypatch.setattr(ingest, "_edgar_company_by_cik", lambda c: _make_edgar_company())
+
+        def throttle(*_a, **_k):
+            raise ConnectionError("edgar throttled")
+
+        monkeypatch.setattr(ingest, "_get_entity_filings", throttle)
+
+        with pytest.raises(ConnectionError):
+            ingest.ingest_filings(session, company, form="10-K", limit=6)
+
+
 # Tests: ingest_prices
-# ---------------------------------------------------------------------------
 
 
 class TestIngestPrices:
@@ -354,12 +384,15 @@ class TestIngestPrices:
         return co
 
     def _patch_yf(self, monkeypatch, df: pd.DataFrame) -> None:
-        """Patch yfinance Ticker.history to return *df*."""
+        """Patch yfinance Ticker.history to return *df* (offline, no session)."""
         from pipeline import ingest
 
         mock_ticker = MagicMock()
         mock_ticker.history.return_value = df
-        monkeypatch.setattr(ingest.yf, "Ticker", lambda t: mock_ticker)
+        # Accept the session kwarg _fetch_history now passes; keep tests hermetic
+        # by short-circuiting the shared cached session.
+        monkeypatch.setattr(ingest.yf, "Ticker", lambda *a, **k: mock_ticker)
+        monkeypatch.setattr(ingest, "_yf_session", lambda: None)
 
     def test_inserts_prices(self, session: Session, monkeypatch):
         """ingest_prices should insert one Price row per trading day."""
@@ -416,7 +449,8 @@ class TestIngestPrices:
 
         mock_ticker = MagicMock()
         mock_ticker.history.return_value = df
-        monkeypatch.setattr(ingest.yf, "Ticker", lambda t: mock_ticker)
+        monkeypatch.setattr(ingest.yf, "Ticker", lambda *a, **k: mock_ticker)
+        monkeypatch.setattr(ingest, "_yf_session", lambda: None)
 
         company = self._make_company(session)
         count = ingest.ingest_prices(session, company, start=date(2024, 1, 1), end=date(2024, 1, 5))
@@ -455,9 +489,7 @@ class TestIngestPrices:
         assert row.adj_close == pytest.approx(172.62, rel=1e-5)
 
 
-# ---------------------------------------------------------------------------
 # Tests: helper functions
-# ---------------------------------------------------------------------------
 
 
 class TestParseDate:
@@ -488,9 +520,29 @@ class TestParseDate:
         assert _parse_date("2024-11-01T00:00:00") == date(2024, 11, 1)
 
 
-# ---------------------------------------------------------------------------
+class TestResolveWindow:
+    def test_explicit_start_end_are_passed_through(self):
+        from pipeline.ingest import _resolve_window
+
+        start, end = _resolve_window(date(2018, 1, 1), date(2026, 7, 15), years=6)
+        assert start == date(2018, 1, 1)
+        assert end == date(2026, 7, 15)
+
+    def test_years_lookback_from_end(self):
+        from pipeline.ingest import _resolve_window
+
+        start, end = _resolve_window(None, date(2026, 7, 15), years=8)
+        assert (start, end) == (date(2018, 7, 15), date(2026, 7, 15))
+
+    def test_leap_day_end_does_not_crash(self):
+        """A Feb-29 end whose look-back year isn't a leap year falls back to Feb 28."""
+        from pipeline.ingest import _resolve_window
+
+        start, _ = _resolve_window(None, date(2024, 2, 29), years=1)
+        assert start == date(2023, 2, 28)
+
+
 # Integration smoke tests (skipped by default — require postgres + network)
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.integration

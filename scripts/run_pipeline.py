@@ -56,6 +56,11 @@ def main() -> None:
     parser.add_argument("--years", type=int, default=6, help="Years of history to ingest.")
     parser.add_argument("--no-ingest", action="store_true", help="Skip ingestion; recompute only.")
     parser.add_argument(
+        "--no-signals",
+        action="store_true",
+        help="Skip signal computation (e.g. already computed via sharded workers).",
+    )
+    parser.add_argument(
         "--report", action="store_true", help="Generate the LaTeX/PDF research note at the end."
     )
     args = parser.parse_args()
@@ -75,8 +80,11 @@ def main() -> None:
         ingest_market_benchmark(years=args.years)
 
     with SessionLocal() as session:
-        logger.info("Computing signals...")
-        compute_signals(session)
+        if args.no_signals:
+            logger.info("Skipping signal computation (--no-signals).")
+        else:
+            logger.info("Computing signals...")
+            compute_signals(session)
 
         logger.info("Computing forward returns...")
         compute_forward_returns(session, horizons=HORIZONS)

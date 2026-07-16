@@ -19,9 +19,7 @@ import logging
 import sys
 from pathlib import Path
 
-# ---------------------------------------------------------------------------
 # Make the project root importable when the script is run directly.
-# ---------------------------------------------------------------------------
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
@@ -35,10 +33,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
 # Default universe: 12 large-cap tickers across 5 sectors.
 # All have continuous 10-K filing histories going back at least 10 years.
-# ---------------------------------------------------------------------------
 DEFAULT_TICKERS: list[str] = [
     # Technology
     "AAPL",
@@ -111,7 +107,7 @@ def main(argv: list[str] | None = None) -> None:
         ", ".join(tickers),
     )
 
-    ingest_universe(tickers=tickers, years=args.years)
+    ingest_universe(tickers, years=args.years)
     logger.info("Seed complete.")
 
 

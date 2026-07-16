@@ -21,6 +21,7 @@ dependencies = [
     "textstat>=0.7",
     "prometheus-client>=0.21",
     "matplotlib>=3.9",
+    "tenacity>=9.0",
 ]
 
 [project.optional-dependencies]
