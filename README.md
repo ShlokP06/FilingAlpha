@@ -20,7 +20,7 @@ costs, information coefficients, and event-study tercile spreads.
 | Signal | Definition | Reference |
 |--------|-----------|-----------|
 | **Loughran-McDonald tone** | Fraction of words in the LM finance dictionary's *Negative / Uncertainty / Litigious* categories | Loughran & McDonald (2011), *J. Finance* |
-| **YoY textual change ("Lazy Prices")** | TF-IDF cosine similarity to the prior year's 10-K — low similarity (big change) is the predictive event | Cohen, Malloy & Nguyen (2020), *J. Finance* |
+| **YoY textual change ("Lazy Prices")** | TF-IDF cosine similarity to the prior comparable filing (same period a year earlier) — low similarity (big change) is the predictive event | Cohen, Malloy & Nguyen (2020), *J. Finance* |
 | **Risk-factor delta** | `1 − cosine` of Item 1A (Risk Factors) year-over-year | — |
 | **Readability (Fog)** | Gunning-Fog index of the MD&A | Li (2008), *J. Acct. Econ.* |
 
@@ -126,10 +126,10 @@ network; enable them with `RUN_INTEGRATION=1 uv run pytest -m integration`.
 
 ## Backtest results
 
-Universe: a **2018-anchored small/mid-cap universe** (\$300M–\$10B cap band, sector-balanced, survivorship-aware —
-built point-in-time by `scripts/build_universe.py`, resolved by CIK so renamed/delisted firms are kept). This run
-ingested **300 firms** (299 with complete price history), **11,671 filings** (2,744 10-K + 8,927 10-Q),
-**603,350 daily closes**, and two forward horizons (21 and 63 trading days). Results are reported straight.
+Universe: the same **2018-anchored small/mid-cap panel** described above (\$300M–\$10B cap band, sector-balanced,
+survivorship-aware, built point-in-time by `scripts/build_universe.py` and resolved by CIK — 299 of the 300 firms
+have complete price history). Backtested across both forms over two forward horizons (21 and 63 trading days),
+net of 10 bps/side. Results are reported straight.
 
 **Headline:** on 10-Ks, the **Loughran-McDonald negative-tone** signal reproduces the documented anomaly with
 statistical significance — more negative tone predicts *lower* filing-lagged forward returns, significant on *both*
@@ -167,11 +167,3 @@ lag, cross-sectional IC, event-study tercile spread, an expanding-window walk-fo
 
 FastAPI · PostgreSQL · SQLAlchemy 2.0 · Alembic · scikit-learn · pandas · edgartools ·
 yfinance · textstat · Vite/React/TypeScript/Tremor · Docker Compose · Prometheus · Grafana
-
-## Resume angles
-
-- **Backend/SDE** — typed FastAPI (routers by domain, DI'd sessions, Pydantic contracts),
-  Postgres + Alembic migrations, idempotent ingestion, Docker, CI, Prometheus metrics.
-- **Hedge-Fund DS** — published text signals, point-in-time/no-lookahead backtest,
-  transaction costs, rank-IC + t-stat + event-study tercile spread.
-- **Applied ML** — walk-forward classifier on the engineered features, OOS evaluation.
